@@ -1,28 +1,37 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <v-app id="app">
+    <v-container>
+      <div class="user" v-for="user in users" :key="user.id">
+        <img :src="user.avatar_url" :alt="user.login" />
+        <a :href="user.html_url">Get user</a>
+      </div>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  data: () => {
+    return {
+      users: null,
+    };
+  },
+  created() {
+    const getData = async () => {
+      const result = await fetch("https://api.github.com/search/users?q=AliQasimzade");
+      const res = await result.json();
+      this.users = res.items;
+      console.log(this.users[0]);
+     
+    };
+    getData();
+  },
+};
 </script>
 
-<style>
+<style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
